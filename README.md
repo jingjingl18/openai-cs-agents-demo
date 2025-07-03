@@ -70,10 +70,6 @@ The frontend will be available at: [http://localhost:3000](http://localhost:3000
 
 This command will also start the backend.
 
-## Customization
-
-This app is designed for demonstration purposes. Feel free to update the agent prompts, guardrails, and tools to fit your own customer service workflows or experiment with new use cases! The modular structure makes it easy to extend or modify the orchestration logic for your needs.
-
 ## Demo Flows
 
 ### Demo flow #1
@@ -109,7 +105,6 @@ This flow demonstrates how the system intelligently routes your requests to the 
 1. **Start with a bill check request:**
    - User: "I want to check my bill."
    - The Triage Agent will route you to the bill_dispute_resolve_agent.
-   - bill_dispute_resolve_agent: "I can help you cancel your flight. I have your confirmation number as LL0EZ6 and your flight number as FLT-476. Can you please confirm that these details are correct before I proceed with the cancellation?"
 
 2. **Bill Check:**
    - The bill_dispute_resolve_agent will ask to confirm your account number.
