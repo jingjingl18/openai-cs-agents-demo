@@ -136,14 +136,18 @@ To improve the quality of RAG pipeline:
 Use whatsapp for DEMO
 
 1. **Agent Deployment Methods**
+
 Hosting Environment
+
    - On-Premises Deployment: Given Singtel as telco company with data centers and network, on-premises deployment can ensure maximum data security and low latency.
    - Cloud-Based plarform: Fast deployment as all necessary infrastructure, tools and services are already available 
 
 Whatsapp Integration
+
    - Whatsapp Business API: Set up a webhook URL and use this webhook to communicate between Whatsapp Cloud API and the agent backend
 
 Other Considerations
+
    - Continuously monitor the agent performance and collect user feedback. Iterativly train and update the agent based on new data and insights.
    - Start with one channel first and  and then expand to other channels
 
