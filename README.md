@@ -79,9 +79,9 @@ This app is designed for demonstration purposes. Feel free to update the agent p
 
 ### Demo flow #1
 
-1. **Start with a seat change request:**
-   - User: "Can I change my seat?"
-   - The Triage Agent will recognize your intent and route you to the Seat Booking Agent.
+1. **Start with a roaming data recommendation request:** check data usage then irrelevant question
+   - User: "Can you recommend some roaming data plans?"
+   - The Triage Agent will recognize your intent and route you to the Product Recommendation Agent.
 
 2. **Seat Booking:**
    - The Seat Booking Agent will ask to confirm your confirmation number and ask if you know which seat you want to change to or if you would like to see an interactive seat map.
@@ -102,8 +102,8 @@ This flow demonstrates how the system intelligently routes your requests to the 
 
 ### Demo flow #2
 
-1. **Start with a cancellation request:**
-   - User: "I want to cancel my flight"
+1. **Start with a bill check request:** ask for account and more infor then registration fee
+   - User: "I want to check my bill"
    - The Triage Agent will route you to the Cancellation Agent.
    - Cancellation Agent: "I can help you cancel your flight. I have your confirmation number as LL0EZ6 and your flight number as FLT-476. Can you please confirm that these details are correct before I proceed with the cancellation?"
 
@@ -123,10 +123,37 @@ This flow demonstrates how the system intelligently routes your requests to the 
 
 This flow demonstrates how the system not only routes requests to the appropriate agent, but also enforces guardrails to keep the conversation focused on airline-related topics and prevent attempts to bypass system instructions.
 
-## Contributing
+## RAG Pipeline (techniques)
 
-You are welcome to open issues or submit PRs to improve this app, however, please note that we may not review all suggestions.
+To improve the quality of RAG pipeline:
+1. Chunk: Select appropriate Chunk size, chunk overlap and top K chunks returned
+2. Rerank: Use reranking methods to select most relevant chunks related to query
+3. Query transformation: Rewrite complex raw query into sequential subquestions
+4. Data: Ensure data in database and vector store is accurate  
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Integration Strategy and Approach
+Use whatsapp for DEMO
+1. **Agent Deployment Methods**
+Hosting Environment
+   - On-Premises Deployment: Given Singtel as telco company with data centers and network, on-premises deployment can ensure maximum data security and low latency.
+   - Cloud-Based plarform: Fast deployment as all necessary infrastructure, tools and services are already available 
+
+Whatsapp Integration
+   - Whatsapp Business API: Set up a webhook URL and use this webhook to communicate between Whatsapp Cloud API and the agent backend
+
+Other Considerations
+   - Continuously monitor the agent performance and collect user feedback. Iterativly train and update the agent based on new data and insights.
+   - Start with one channel first and  and then expand to other channels
+
+
+2. **Integration Challenges**
+   - Authentication: Need to verfiy the user when accessing personal data like usage, billing etc in the database
+   - Latency: Add more logic to each tool to minimise the number of tool calls; save relevant data from previous tool call (eg mobile usage) as context for a followup or new question to avoid repeated call etc
+   - UI design: How to fit the reponse from agent into user interface (eg for whatsapp the response needs to be concise)
+   - Scalability: During peak hours if agent wants to query the same database etc
+
+3. **Evaluation metrics**
+   - Customer Satisfaction Score: Gather user feedback (self-designed or provided by platform) 
+   - Escalation Rate: What is the proportion of customer queries that need to be escalated
+   - Repeat Contact Rate: How often customers need to contact for the same issue again

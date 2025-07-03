@@ -5,13 +5,12 @@ from typing import Optional, List, Dict, Any
 from uuid import uuid4
 import time
 import logging
+import json
 
 from main import (
     triage_agent,
-    faq_agent,
-    seat_booking_agent,
-    flight_status_agent,
-    cancellation_agent,
+    product_recommendation_agent,
+    bill_dispute_resolve_agent,
     create_initial_context,
 )
 
@@ -52,6 +51,7 @@ class ChatRequest(BaseModel):
 class MessageResponse(BaseModel):
     content: str
     agent: str
+    source: Optional[str] = None # if agent uses RAG tool, save the text from RAG
 
 class AgentEvent(BaseModel):
     id: str
@@ -109,10 +109,8 @@ def _get_agent_by_name(name: str):
     """Return the agent object by name."""
     agents = {
         triage_agent.name: triage_agent,
-        faq_agent.name: faq_agent,
-        seat_booking_agent.name: seat_booking_agent,
-        flight_status_agent.name: flight_status_agent,
-        cancellation_agent.name: cancellation_agent,
+        product_recommendation_agent.name: product_recommendation_agent,
+        bill_dispute_resolve_agent.name: bill_dispute_resolve_agent,
     }
     return agents.get(name, triage_agent)
 
@@ -141,10 +139,8 @@ def _build_agents_list() -> List[Dict[str, Any]]:
         }
     return [
         make_agent_dict(triage_agent),
-        make_agent_dict(faq_agent),
-        make_agent_dict(seat_booking_agent),
-        make_agent_dict(flight_status_agent),
-        make_agent_dict(cancellation_agent),
+        make_agent_dict(product_recommendation_agent),
+        make_agent_dict(bill_dispute_resolve_agent),
     ]
 
 # =========================
@@ -205,7 +201,7 @@ async def chat_endpoint(req: ChatRequest):
                 passed=(g != failed),
                 timestamp=gr_timestamp,
             ))
-        refusal = "Sorry, I can only answer questions related to airline travel."
+        refusal = "Sorry, I can only answer questions related to telco service."
         state["input_items"].append({"role": "assistant", "content": refusal})
         return ChatResponse(
             conversation_id=conversation_id,
@@ -223,8 +219,27 @@ async def chat_endpoint(req: ChatRequest):
     for item in result.new_items:
         if isinstance(item, MessageOutputItem):
             text = ItemHelpers.text_message_output(item)
-            messages.append(MessageResponse(content=text, agent=item.agent.name))
+            agent_tp = item.agent.name
+            source_tp = None
+            tool_callid = None
+            # If RAG tool is used, save the RAG output 
+            for item_tp in result.new_items:
+                if isinstance(item_tp, ToolCallItem):
+                    tool_name = getattr(item_tp.raw_item, "name", None)
+                    if tool_name=="rag_contract_tool":
+                        tool_callid = getattr(item_tp.raw_item, "call_id", None)
+                        print(f'rag tool call id from toolcall is {tool_callid}')
+            if tool_callid:
+                for item_tp in result.new_items:
+                    if isinstance(item_tp, ToolCallOutputItem):
+                        #raw_data = json.loads(item_tp.raw_item)
+                        tool_callid_tp = item_tp.raw_item["call_id"]
+                        print(f'rag tool call id from toolcalloutput is {tool_callid_tp}')
+                        if tool_callid_tp == tool_callid:                        
+                            source_tp=str(item_tp.output)
+            messages.append(MessageResponse(content=text, agent=item.agent.name, source=source_tp))
             events.append(AgentEvent(id=uuid4().hex, type="message", agent=item.agent.name, content=text))
+
         # Handle handoff output and agent switching
         elif isinstance(item, HandoffOutputItem):
             # Record the handoff event
@@ -280,25 +295,20 @@ async def chat_endpoint(req: ChatRequest):
                     type="tool_call",
                     agent=item.agent.name,
                     content=tool_name or "",
-                    metadata={"tool_args": tool_args},
+                    metadata={"tool_args": tool_args,},
                 )
-            )
-            # If the tool is display_seat_map, send a special message so the UI can render the seat selector.
-            if tool_name == "display_seat_map":
-                messages.append(
-                    MessageResponse(
-                        content="DISPLAY_SEAT_MAP",
-                        agent=item.agent.name,
-                    )
-                )
+            )            
         elif isinstance(item, ToolCallOutputItem):
+            tool_name = getattr(item.raw_item, "name", None)
             events.append(
                 AgentEvent(
                     id=uuid4().hex,
                     type="tool_output",
                     agent=item.agent.name,
+                    #tool= tool_name or "",
+                    tool= item.raw_item or "",
                     content=str(item.output),
-                    metadata={"tool_result": item.output},
+                    metadata={"tool_result": item.output, "raw": item.raw_item},
                 )
             )
 
@@ -345,3 +355,13 @@ async def chat_endpoint(req: ChatRequest):
         agents=_build_agents_list(),
         guardrails=final_guardrails,
     )
+
+class Item(BaseModel):
+    names: list = []
+
+@app.post("/test")
+async def test(item: Item):
+    list_names = []
+    for nm in item.names:
+        list_names.append(nm)
+    return list_names
