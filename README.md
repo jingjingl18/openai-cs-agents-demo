@@ -7,11 +7,10 @@
 This repository contains a demo of a Customer Service Agent interface built on top of the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/).
 It is composed of two parts:
 
-1. A python backend that handles the agent orchestration logic, implementing the Agents SDK [customer service example](https://github.com/openai/openai-agents-python/tree/main/examples/customer_service)
+1. A python backend (chat-demo) that handles the agent orchestration logic, implementing the Agents SDK 
 
 2. A Next.js UI allowing the visualization of the agent orchestration process and providing a chat interface.
 
-![Demo Screenshot](screenshot.jpg)
 
 ## How to use
 
@@ -133,7 +132,9 @@ To improve the quality of RAG pipeline:
 
 
 ## Integration Strategy and Approach
+
 Use whatsapp for DEMO
+
 1. **Agent Deployment Methods**
 Hosting Environment
    - On-Premises Deployment: Given Singtel as telco company with data centers and network, on-premises deployment can ensure maximum data security and low latency.
