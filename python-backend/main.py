@@ -3,6 +3,7 @@ from __future__ import annotations as _annotations
 import random
 from pydantic import BaseModel
 import string
+import os
 
 from agents import (
     Agent,
@@ -38,8 +39,8 @@ def extract_text_from_pdf_pymupdf(pdf_path):
 
 def get_text_chunks(text):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,  # Adjust as needed
-        chunk_overlap=100  # Adjust as needed
+        chunk_size=500,  # Adjust as needed
+        chunk_overlap=200  # Adjust as needed
     )
     chunks = text_splitter.split_text(text)
     return chunks
@@ -55,7 +56,12 @@ embeddings_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 #Only need to run one time to create vector store
 #-----------------------------------
 # Read pdf
-pdf_file_path = "/home/li/Documents/Work/agent-openai-tutorial/openai-cs-agents-demo/Terms-Conditions.pdf" 
+script_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(script_dir, os.pardir))
+# Define the filename in the parent directory
+filename = "Terms-Conditions.pdf" # Replace with your actual filename
+# Construct the full path to the file
+pdf_file_path = os.path.join(parent_dir, filename)
 extracted_content = extract_text_from_pdf_pymupdf(pdf_file_path)
 
 # Create index
@@ -64,18 +70,10 @@ vector_store = create_faiss_index(text_chunks, embeddings_model)
 #-----------------------------------
 
 vector_store = FAISS.load_local("faiss_index", embeddings_model, allow_dangerous_deserialization=True)
-# # Example search
-# query = "What is the rate of local call per minute?"
-# docs = vector_store.similarity_search(query, k=3)
-# for res in docs:
-#     print('---------------------------------------')
-#     print(f"* {res.page_content} [{res.metadata}]")
-#     print()
 
 # =========================
 # CONTEXT
 # =========================
-
 
 class TelcoAgentContext(BaseModel):
     """Context for telco customer service agents."""
@@ -88,7 +86,6 @@ def create_initial_context() -> TelcoAgentContext:
     """
     ctx = TelcoAgentContext()
     return ctx
-#-------------------------------
 
 # =========================
 # TOOLS
@@ -116,7 +113,7 @@ async def product_recommendation_tool(question: str) -> str:
         return (
             "Singtel offers sim card -----"
         )
-    return "I'm sorry, can you provide more details? " # or escalate to human agent
+    return "I'm sorry, I will escalate this issue to an human expert."
 
 @function_tool(
     name_override="bill_dispute_classification_tool", description_override="Classify bill dispute."
@@ -157,7 +154,6 @@ async def contract_retrieve_tool(context: RunContextWrapper[TelcoAgentContext], 
     text_similar = [doc.page_content for doc in docs]
 
     return text_similar
-
 
 # =========================
 # HOOKS
@@ -269,12 +265,12 @@ def bill_dispute_resolve_instructions(
         "You are a bill dispute resolve agent. If you are speaking to a customer, you probably were transferred to from the triage agent.\n"
         "Use the following routine to support the customer.\n"
         f"1. The customer's account number is {account_number}."+
-        "If the account number is not available, ask the customer for their account_number. If you have it, ask the customer to confirm that is the account number they are referencing.\n"
+        "If the account number is not available, ask the customer for their account_number. If you have it, ask the customer to confirm that is the account number they are referencing. For the same converstaion, only confirm once.\n"
         "2. Use bill_dispute_classification_tool to classify the disputes into categories. If you need more infomration to classify the question, ask the customer more.\n"
         "3. Use the output from bill_dispute_classification_tool."+
         "If the output is Usage Dispute, use usage_history_fetch_to get usage history and report those elements."+
         "If the output is Explain Contract, if you are not sure on what the customer wnat to know, ask the customer more."+ 
-        "When you are clear on what the customer want to know, use contract_retrieve_tool to get relevant documents and then answer question based on those documents.\n"
+        "When you are clear on what the customer want to know, use contract_retrieve_tool to get relevant documents and then answer the question based on those documents and the answer should begin with 'Based on the retrieved information, '.\n"
         "If the customer asks a question that is not related to the routine, transfer back to the triage agent."
     )
 
