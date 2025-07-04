@@ -22,6 +22,14 @@ You can set your OpenAI API key in your environment variables by running the fol
 export OPENAI_API_KEY=your_api_key
 ```
 
+You can set your Google API key in your environment variables by running the following command in your terminal:
+The API key can be created at [GOOGLE API KEY](https://aistudio.google.com/app/apikey)
+
+```bash
+export GOOGLE_API_KEY=your_api_key
+export GEMINI_API_KEY=your_api_key
+```
+
 You can also follow [these instructions](https://platform.openai.com/docs/libraries#create-and-export-an-api-key) to set your OpenAI key at a global level.
 
 Alternatively, you can set the `OPENAI_API_KEY` environment variable in an `.env` file at the root of the `python-backend` folder. You will need to install the `python-dotenv` package to load the environment variables from the `.env` file.
