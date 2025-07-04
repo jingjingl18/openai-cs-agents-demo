@@ -127,13 +127,13 @@ This flow demonstrates how the system intelligently routes your requests to the 
 
 3. **Registration Fee**
    - User: "Understand registration fee for my mobile"
-   - Bill Dispute Resolve Agent: "Based on retrieved information, the registration fee for your mobile is a one-time charge of $10.70...."
+   - Bill Dispute Resolve Agent: "**Based on retrieved information**, the registration fee for your mobile is a one-time charge of $10.70...."
 
 4. **Local Call Rate**
    - User: "Understand the local call rate"
-   - Bill Dispute Resolve Agent: "Based on retrieved information, the local call rate for your mobile plan is 16.05 cents per minute for excess local calls...."
+   - Bill Dispute Resolve Agent: "**Based on retrieved information**, the local call rate for your mobile plan is 16.05 cents per minute for excess local calls...."
 
-This flow demonstrates how the system not only routes requests to the appropriate agent, but also use retrieved data from 'Singtel general terms and conditions.pdf' via RAG and local vector store to answer questions on 'Registration fee' and 'Local call rate' correctly. A local index **faiss_index** is created for this document. In this DEMO, when RAG tool is called, it will retrieve top 3 relevant chunks from this index. The answer based on the RAG output begins with ***Based on retrieved information,***. 
+This flow demonstrates how the system not only routes requests to the appropriate agent, but also use retrieved data from 'Singtel general terms and conditions.pdf' via RAG and local vector store to answer questions on 'Registration fee' and 'Local call rate' correctly. A local index **faiss_index** is created for this document. In this DEMO, when RAG tool is called, it will retrieve top 3 relevant chunks from this index. The answer based on the RAG output begins with "***Based on retrieved information***". 
 
 The retrieved chunks can be found with 'source' key of 'messages' in the reponse.
 ![The retrieved raw data from RAG!](./RAG_output.png)
