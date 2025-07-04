@@ -83,16 +83,16 @@ This command will also start the backend.
 ### Demo flow #1
 
 1. **Start with a data usage check request:** 
-   - User: "I want to check the data usage in my bill."
+   - User: "Hi, I want to check the data usage in my bill."
    - The Triage Agent will recognize your intent and route you to the Bill Dispute Resolve Agent.
 
 2. **Data Usage Check:**
    - The Bill Dispute Resolve Agent will ask to confirm your account number.
    - You can either confirm or give your account number.
-   - Bill Dispute Resolve Agent: "Your data usage is 10G!"
+   - Bill Dispute Resolve Agent: "Your data usage for this billing period is 10GB."
 
 3. **Data Roaming Plans Recommendation:**
-   - User: "Can you recommend some data roaming plan?"
+   - User: "Can you recommend some data roaming plans?"
    - The Bill Dispute Resolve Agent will route you to the Product Recommendation Agent
    - Product Recommendation Agent: "Singtel offers data roaming plans."
 
@@ -111,7 +111,7 @@ This flow demonstrates how the system intelligently routes your requests to the 
 ### Demo flow #2
 
 1. **Start with a bill check request:**
-   - User: "I want to check my bill."
+   - User: "Hi, I want to check my bill."
    - The Triage Agent will route you to the Bill Dispute Resolve Agent.
 
 2. **Bill Check:**
@@ -121,13 +121,14 @@ This flow demonstrates how the system intelligently routes your requests to the 
 
 3. **Registration Fee**
    - User: "Understand registration fee for my mobile"
-   - Bill Dispute Resolve Agent: "Based on retrieved information, there is one-time registration fee of $10.70...."
+   - Bill Dispute Resolve Agent: "Based on retrieved information, the registration fee for your mobile is a one-time charge of $10.70...."
 
 4. **Local Call Rate**
    - User: "Understand the local call rate"
-   - Bill Dispute Resolve Agent: "Based on retrieved information, an excess local call is charged at 16.05 cents per minute."
+   - Bill Dispute Resolve Agent: "Based on retrieved information, the local call rate for your mobile plan is 16.05 cents per minute for excess local calls...."
 
-This flow demonstrates how the system not only routes requests to the appropriate agent, but also use retrieved data from 'Singtel general terms and conditions.pdf' via RAG and local vector store to answer questions on 'Registration fee' and 'Local call rate' correctly.
+This flow demonstrates how the system not only routes requests to the appropriate agent, but also use retrieved data from 'Singtel general terms and conditions.pdf' via RAG and local vector store to answer questions on 'Registration fee' and 'Local call rate' correctly. In this DEMO, when RAG tool is called and the answer based on RAG output begins with ***Based on retrieved information,***. The retrieved chunks can be found with 'source' key of 'messages' in the reponse.
+![The retrieved raw data from RAG!](./RAG_output.png)
 
 ## RAG Pipeline (techniques)
 
@@ -170,7 +171,7 @@ Use whatsapp for DEMO
 3. **Evaluation metrics**
 
    - **Business Outcome:**
-      - Cost Savings: How many customer queries are handled successfully by the AI agent each day?
+      - Cost Savings: How many customer queries are handled successfully by the AI agent each day? How much cost is saved if the queries were handled by human expert?
       - Resolution Rate: The percentage of user queries or tasks that the AI agent successfully resolves or completes without human intervention.
       - Customer Satisfaction Score: Gather user feedback (self-designed or provided by platform eg 1-5 star rating after the conversation). 
       

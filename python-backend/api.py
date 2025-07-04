@@ -236,7 +236,7 @@ async def chat_endpoint(req: ChatRequest):
                         tool_callid_tp = item_tp.raw_item["call_id"]
                         print(f'rag tool call id from toolcalloutput is {tool_callid_tp}')
                         if tool_callid_tp == tool_callid:                        
-                            source_tp=str(item_tp.output)
+                            source_tp = str(item_tp.output)
             messages.append(MessageResponse(content=text, agent=item.agent.name, source=source_tp))
             events.append(AgentEvent(id=uuid4().hex, type="message", agent=item.agent.name, content=text))
 
@@ -305,10 +305,9 @@ async def chat_endpoint(req: ChatRequest):
                     id=uuid4().hex,
                     type="tool_output",
                     agent=item.agent.name,
-                    #tool= tool_name or "",
-                    tool= item.raw_item or "",
+                    tool= tool_name or "",
                     content=str(item.output),
-                    metadata={"tool_result": item.output, "raw": item.raw_item},
+                    metadata={"tool_result": item.output, },
                 )
             )
 
