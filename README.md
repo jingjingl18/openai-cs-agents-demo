@@ -88,12 +88,13 @@ This command will also start the backend.
 2. **Data Usage Check:**
    - The Bill Dispute Resolve Agent will ask to confirm your account number.
    - You can either confirm or give your account number.
-   - Bill Dispute Resolve Agent: "Your data usage for this billing period is 10GB."
+   - Bill Dispute Resolve Agent: "Your data usage for this billing period is 10GB...."
 
 3. **Data Roaming Plans Recommendation:**
    - User: "Can you recommend some data roaming plans?"
-   - The Bill Dispute Resolve Agent will route you to the Product Recommendation Agent
-   - Product Recommendation Agent: "Singtel offers data roaming plans."
+   - The Bill Dispute Resolve Agent will route you to the Triage Agent
+   - The Triage Agent  will route you to the Product Recommendation Agent
+   - Product Recommendation Agent: "Singtel offers data roaming plans...."
 
 4. **Trigger the Relevance Guardrail:**
    - User: "What is the weather today?"
