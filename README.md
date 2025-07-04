@@ -144,45 +144,45 @@ Use whatsapp for DEMO
 
 1. **Agent Deployment Methods**
 
-   - Hosting Environment
+   - **Hosting Environment**
 
-      - Cloud-Based Plarform: Fast deployment as all necessary infrastructure, tools and services are already available 
+      - Cloud-Based Plarform: Fast deployment as all necessary infrastructure, tools and services are already available. 
       - On-Premises Deployment: Given Singtel as telco company with data centers and network, on-premises deployment can ensure maximum data security and low latency.
 
-   - Whatsapp Integration
+   - **Whatsapp Integration**
 
-      - Whatsapp Business API: Set up a webhook URL and use this webhook to communicate between Whatsapp Cloud API and the agent backend
+      - Whatsapp Business API: Set up a webhook URL and use this webhook to communicate between Whatsapp Cloud API and the agent backend.
 
-   - Other Considerations
+   - **Other Considerations**
 
       - Continuously monitor the agent performance and collect user feedback. Iterativly train and update the agent based on new data and insights.
-      - Start with one channel first and  and then expand to other channels
+      - Start with one channel first and  and then expand to other channels.
 
 2. **Integration Challenges**
 
-   - Authentication: Need to verfiy the user when the agent needs to access personal data like usage, billing etc in the database
-   - Latency: Add more logic to each tool to minimise the number of tool calls; save relevant data from previous tool call (eg mobile usage) as context for a follow-up or new question to avoid repeated same call etc
+   - Authentication: Need to verfiy the user when the agent needs to access personal data like usage, billing etc in the database.
+   - Latency: Add more logic to each tool to minimise the number of tool calls; save relevant data from previous tool call (eg mobile usage) as context for a follow-up or new question to avoid repeated same call etc.
    - Scalability: During peak times if the webhook needs to handle a large volume of cocurrent messages and maybe want to access the same database at the same time etc. Due to the rate limits on the messages sent per second from whatsapp, the  integration must include logic to queue messages and handle these limits gracefully to avoid messages being dropped. 
    - State and Context Management: Maintaining conversation context accross multiple turn is vital for an AI agent. The backend needs to reliably store and retrieve the session data for each user.
    - Real-time Processing: The webhook needs to process incoming messages instantly and responds to whatsapp's verification within seconds.
-   - UI design: Response from the agents must be mapped to whatsapp Data format. Also, need to make sure the response can fit well into user interface (eg for whatsapp the response needs to be concise) etc
+   - UI design: Response from the agents must be mapped to whatsapp Data format. Also, need to make sure the response can fit well into user interface (eg for whatsapp the response needs to be concise) etc.
 
 3. **Evaluation metrics**
 
-   - Business Outcome:
+   - **Business Outcome:**
       - Cost Savings: How many customer queries are handled successfully by the AI agent each day?
       - Resolutin Rate: The percentage of user queries or tasks that the AI agent successfully resolves or completes without human intervention.
-      - Customer Satisfaction Score: Gather user feedback (self-designed or provided by platform eg 1-5 star rating after the conversation) 
+      - Customer Satisfaction Score: Gather user feedback (self-designed or provided by platform eg 1-5 star rating after the conversation). 
       
-   - User Experience:
+   - **User Experience:**
       - Escalation Rate: What is the proportion of customer queries that need to be escalated
       - Average Conversation Length: The average number of turns or messages exchanged between the user and the agent to reach a resolution or handoff.
       - Engagement Rate: The percentage of users who start an interaction with the chatbot and continue beyond the initial greeting.
       - Response Time (Latency): The time taken for the AI agent to generate a response after receiving user input.
 
-   - AI Model and System Performance: 
-      - Intent Recognition Accuracy: How accurately the agent identifies the user's underlying intent.
+   - **AI Model and System Performance:** 
+      - Intent Recognition Accuracy: How accurately the agent identifies the user's underlying intent?
       - Entity Extraction Accuracy: How accurately the agent extracts key pieces of information (entities) from user utterances (e.g., account number, date).
       - Dialogue Path Efficiency: Measures if the agent follows an optimized and logical path to generate a correct response, minimizing unnecessary steps or questions.
-      - Tool Usage and Execution: For agents that integrate with external APIs, did the agent select the appropriate API/tool for the task? Were the parameters passed to the tool correct and complete? etc
+      - Tool Usage and Execution: For agents that integrate with external APIs, did the agent select the appropriate API/tool for the task? Were the parameters passed to the tool correct and complete? etc.
       - Repeat Contact Rate: How often customers need to contact for the same issue again.
