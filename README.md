@@ -53,9 +53,8 @@ npm install
 
 ### Run the app
 
-You can either run the backend independently if you want to use a separate UI, or run both the UI and backend at the same time.
-
 #### Run the backend independently
+##### (To test the backend, the conversation_id in the first run can be null. In the runs later, need to stick to the same id.)
 
 From the `python-backend` folder, run:
 
@@ -65,7 +64,8 @@ python -m uvicorn api:app --reload --port 8000
 
 The backend will be available at: [http://localhost:8000](http://localhost:8000)
 
-#### Run the UI & backend simultaneously
+#### Run the UI & backend simultaneously 
+##### (UI didnot work well in my side due to npm issues. No change in the code from original version.)
 
 From the `ui` folder, run:
 
