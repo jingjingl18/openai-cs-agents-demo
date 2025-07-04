@@ -171,7 +171,7 @@ Use whatsapp for DEMO
 
    - **Business Outcome:**
       - Cost Savings: How many customer queries are handled successfully by the AI agent each day?
-      - Resolutin Rate: The percentage of user queries or tasks that the AI agent successfully resolves or completes without human intervention.
+      - Resolution Rate: The percentage of user queries or tasks that the AI agent successfully resolves or completes without human intervention.
       - Customer Satisfaction Score: Gather user feedback (self-designed or provided by platform eg 1-5 star rating after the conversation). 
       
    - **User Experience:**
