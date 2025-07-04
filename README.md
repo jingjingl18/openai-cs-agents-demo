@@ -19,15 +19,15 @@ It is composed of two parts:
 You can set your OpenAI API key in your environment variables by running the following command in your terminal:
 
 ```bash
-export OPENAI_API_KEY=your_api_key
+export OPENAI_API_KEY=your_opanai_api_key
 ```
 
-You can set your Google API key in your environment variables by running the following command in your terminal:
+You can set your Google API key in your environment variables by running the following command in your terminal.
 The API key can be created at [GOOGLE API KEY](https://aistudio.google.com/app/apikey)
 
 ```bash
-export GOOGLE_API_KEY=your_api_key
-export GEMINI_API_KEY=your_api_key
+export GOOGLE_API_KEY=your_google_api_key
+export GEMINI_API_KEY=your_google_api_key
 ```
 
 You can also follow [these instructions](https://platform.openai.com/docs/libraries#create-and-export-an-api-key) to set your OpenAI key at a global level.
@@ -84,17 +84,17 @@ This command will also start the backend.
 
 1. **Start with a data usage check request:** 
    - User: "I want to check the data usage in my bill."
-   - The Triage Agent will recognize your intent and route you to the bill_dispute_resolve_agent.
+   - The Triage Agent will recognize your intent and route you to the Bill Dispute Resolve Agent.
 
 2. **Data Usage Check:**
-   - The bill_dispute_resolve_agent will ask to confirm your account number.
+   - The Bill Dispute Resolve Agent will ask to confirm your account number.
    - You can either confirm or give your account number.
-   - bill_dispute_resolve_agent: "Your data usage is 10G!"
+   - Bill Dispute Resolve Agent: "Your data usage is 10G!"
 
 3. **Data Roaming Plans Recommendation:**
    - User: "Can you recommend some data roaming plan?"
-   - The bill_dispute_resolve_agent will route you to the product_recommendation_agent
-   - product_recommendation_agent: "Singtel offers data roaming plans."
+   - The Bill Dispute Resolve Agent will route you to the Product Recommendation Agent
+   - Product Recommendation Agent: "Singtel offers data roaming plans."
 
 4. **Trigger the Relevance Guardrail:**
    - User: "What is the weather today?"
@@ -106,26 +106,26 @@ This command will also start the backend.
    - Jailbreak Guardrail will trip and turn red on the screen.
    - Agent: "Sorry, I can only answer questions related to telco service.."
 
-This flow demonstrates how the system intelligently routes your requests to the right specialist agent, ensuring you get accurate and helpful responses for data usage check in bill and data roaming plans recommendation. Relevance and jailbreak guradrails are also enforced to make sure the conversation stays on topics related telco service.
+This flow demonstrates how the system intelligently routes your requests to the right specialist agent, ensuring you get accurate and helpful responses for data usage check in bill and data roaming plans recommendation. Relevance and jailbreak guradrails are also enforced to make sure the conversation stays on topics related to telco service.
 
 ### Demo flow #2
 
 1. **Start with a bill check request:**
    - User: "I want to check my bill."
-   - The Triage Agent will route you to the bill_dispute_resolve_agent.
+   - The Triage Agent will route you to the Bill Dispute Resolve Agent.
 
 2. **Bill Check:**
-   - The bill_dispute_resolve_agent will ask to confirm your account number.
+   - The Bill Dispute Resolve Agent will ask to confirm your account number.
    - You can either confirm or give your account number.
-   - bill_dispute_resolve_agent will ask for more details on what to check in the bill.
+   - The Bill Dispute Resolve Agent will ask for more details on what to check in the bill.
 
 3. **Registration Fee**
    - User: "Understand registration fee for my mobile"
-   - bill_dispute_resolve_agent: "Based on retrieved information, there is one-time registration fee of $10.70...."
+   - Bill Dispute Resolve Agent: "Based on retrieved information, there is one-time registration fee of $10.70...."
 
 4. **Local Call Rate**
    - User: "Understand the local call rate"
-   - bill_dispute_resolve_agent: "Based on retrieved information, an excess local call is charged at 16.05 cents per minute."
+   - Bill Dispute Resolve Agent: "Based on retrieved information, an excess local call is charged at 16.05 cents per minute."
 
 This flow demonstrates how the system not only routes requests to the appropriate agent, but also use retrieved data from 'Singtel general terms and conditions.pdf' via RAG and local vector store to answer questions on 'Registration fee' and 'Local call rate' correctly.
 
@@ -138,7 +138,6 @@ To improve the quality of RAG pipeline:
 3. Query transformation: Rewrite complex raw query into sequential subquestions
 4. Data: Ensure data in database and vector store is accurate  
 
-
 ## Integration Strategy and Approach
 
 Use whatsapp for DEMO
@@ -147,8 +146,8 @@ Use whatsapp for DEMO
 
    - Hosting Environment
 
+      - Cloud-Based Plarform: Fast deployment as all necessary infrastructure, tools and services are already available 
       - On-Premises Deployment: Given Singtel as telco company with data centers and network, on-premises deployment can ensure maximum data security and low latency.
-      - Cloud-Based plarform: Fast deployment as all necessary infrastructure, tools and services are already available 
 
    - Whatsapp Integration
 
@@ -159,11 +158,10 @@ Use whatsapp for DEMO
       - Continuously monitor the agent performance and collect user feedback. Iterativly train and update the agent based on new data and insights.
       - Start with one channel first and  and then expand to other channels
 
-
 2. **Integration Challenges**
 
    - Authentication: Need to verfiy the user when accessing personal data like usage, billing etc in the database
-   - Latency: Add more logic to each tool to minimise the number of tool calls; save relevant data from previous tool call (eg mobile usage) as context for a followup or new question to avoid repeated call etc
+   - Latency: Add more logic to each tool to minimise the number of tool calls; save relevant data from previous tool call (eg mobile usage) as context for a followup or new question to avoid repeated same call etc
    - UI design: How to fit the reponse from agent into user interface (eg for whatsapp the response needs to be concise)
    - Scalability: During peak hours if agent wants to query the same database etc
 
